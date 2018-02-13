@@ -1,0 +1,16 @@
+.locations-header{
+    padding: .5em;
+}
+
+#add-location-options{
+    margin-bottom: 20px;
+}
+
+.main-container{
+    margin-top: 50px;
+}
+
+#photo-preview{
+    max-width: 100px;
+    max-height: 100px;
+}
