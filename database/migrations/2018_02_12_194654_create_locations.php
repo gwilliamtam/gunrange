@@ -17,9 +17,10 @@ class CreateLocations extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('name');
-            $table->string('address');
-            $table->string('url');
-            $table->string('image');
+            $table->string('address')->nullable();
+            $table->string('coordinates')->nullable();
+            $table->string('map')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

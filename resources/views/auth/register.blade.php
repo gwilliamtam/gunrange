@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container main-container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card card-default">
@@ -61,9 +61,21 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-md-6 offset-md-4">
+                                <div class="form-check">
+
+                                    <button class="btn btn-outline-dark" id="accept-terms">Accept Terms and Conditions</button><br>
+                                    <small class="text-muted">Click to read the Terms and Conditions.</small>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" id="submit-button" class="btn btn-dark disabled">
                                     Register
                                 </button>
                             </div>
@@ -74,4 +86,40 @@
         </div>
     </div>
 </div>
+
+@include('public.terms')
+
+<script>
+    function acceptTerms()
+    {
+        $("#accept-terms").removeClass("btn-outline-dark")
+        $("#accept-terms").addClass("btn-dark")
+        $("#accept-terms").html("Terms and Conditions Accepted")
+        $("#submit-button").removeClass("disabled")
+        $("#terms-modal").modal("hide")
+    }
+
+    function reverseAcceptTerms()
+    {
+        $("#accept-terms").removeClass("btn-dark")
+        $("#accept-terms").addClass("btn-outline-dark")
+        $("#accept-terms").html("Accept Terms and Conditions")
+        $("#submit-button").addClass("disabled")
+        $("#terms-modal").modal("hide")
+    }
+
+    $(document).ready(function(){
+        $("#accept-terms").on("click", function(){
+            $("#terms-modal").modal("show")
+        })
+
+        $("#accept-terms-button").on("click", function(){
+            acceptTerms()
+        })
+
+        $("#no-accept-terms-button").on("click", function(){
+            reverseAcceptTerms()
+        })
+    })
+</script>
 @endsection

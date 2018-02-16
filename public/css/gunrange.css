@@ -14,3 +14,49 @@
     max-width: 100px;
     max-height: 100px;
 }
+
+.errors{
+    position: fixed;
+    top: 65px;
+    left: 65px;
+    right: 65px;
+    z-index: 20;
+}
+
+.card-location-image {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    /*display: table;*/
+    text-align: center;
+    background-color: rgba(0,0,0,.3);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.card-location-image h1{
+    display:table-cell;
+    vertical-align:middle;
+}
+
+.card{
+    border-radius: 5px;
+}
+
+.dashboard-card{
+    margin-bottom: 5px;
+}
+.dashboard-card .card-link{
+    margin-left: 5px;
+}
+
+@media screen and (min-width: 991px) {
+    .dashboard-card{
+        min-height: 200px;
+    }
+}
+@media screen and (min-width: 769px) and (max-width: 991px) {
+    .dashboard-card{
+        min-height: 260px;
+    }
+}

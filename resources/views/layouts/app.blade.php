@@ -26,11 +26,10 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="/images/gun.png" height="20px">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{ route('welcome') }}">
                     <i class="fas fa-bullseye"></i>
-                    <i class="fas fa-mobile-alt"></i>
+                    {{--<i class="fas fa-mobile-alt"></i>--}}
+                    GunRange.co
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -51,15 +50,16 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Activities
+                                    Dashboard
 
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Dashboard</a>
-                                    <a class="dropdown-item" href="#">Shooting</a>
+                                    <a class="dropdown-item" href="#">Practice</a>
                                     <a class="dropdown-item" href="#">Ammo</a>
                                     <a class="dropdown-item" href="#">Gear</a>
                                     <a class="dropdown-item" href="{{ route('locations.index') }}">Locations</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('home') }}">My Dashboard</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">Help</a>
                                 </div>
@@ -89,6 +89,21 @@
 
         <main class="main">
         {{--<main class="py-4">--}}
+
+            {{-- Errors --}}
+            @if ($errors->any())
+                <div class="container errors">
+                    <div class="alert alert-dark" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                            @foreach ($errors->all() as $error)
+                                <strong>{{ $error }}</strong>
+                            @endforeach
+                    </div>
+                </div>
+            @endif
+
             @yield('content')
         </main>
     </div>

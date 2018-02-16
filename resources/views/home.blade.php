@@ -2,22 +2,46 @@
 
 @section('content')
 <div class="container main-container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card card-default">
-                <div class="card-header">Dashboard</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <div class="row">
 
-                    You are logged in!
-                </div>
-            </div>
+        <div class="col-md">
+            @component('partials.dashboard-card', [
+                'title' => 'Practice',
+                'link' => '#',
+                'text' => 'Take a picture of each one of your targets and add some values for your analytics'
+            ])
+            @endcomponent
         </div>
+
+        <div class="col-md">
+            @component('partials.dashboard-card', [
+                'title' => 'Ammo',
+                'link' => '#',
+                'text' => 'Add a picture of the ammo you will use in your practice.'
+            ])
+            @endcomponent
+        </div>
+
+        <div class="col-md">
+            @component('partials.dashboard-card', [
+                'title' => 'Gear',
+                'link' => '#',
+                'text' => 'You have the option on include a photo of the gear configuration you are using today even is rental, borrow or owned.'
+            ])
+            @endcomponent
+        </div>
+
+        <div class="col-md">
+            @component('partials.dashboard-card', [
+                'title' => 'Locations',
+                'link' => route('locations.index'),
+                'text' => 'Add a photo or just the name of the gun range location you are practicing.'
+            ])
+            @endcomponent
+        </div>
+
     </div>
+
 </div>
 @endsection

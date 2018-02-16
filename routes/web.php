@@ -11,12 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
+Route::get('/', 'PublicController@index')->name('welcome');
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('locations', 'LocationsController')->middleware('auth');
+Route::post('locations/save', 'LocationsController@save')
+    ->name('locations.save')->middleware('auth');
+
+Route::get('locations/delete/{locationId}', 'LocationsController@delete')
+    ->name('locations.delete')->middleware('auth');
+
+Route::get('locations', 'LocationsController@index')
+    ->name('locations.index')->middleware('auth');
