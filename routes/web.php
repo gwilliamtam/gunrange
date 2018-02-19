@@ -17,11 +17,53 @@ Auth::routes();
 Route::get('/', 'PublicController@index')->name('welcome');
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('locations/save', 'LocationsController@save')
-    ->name('locations.save')->middleware('auth');
+Route::prefix('locations')->group(function () {
+    Route::post('save', 'LocationsController@save')
+        ->name('locations.save')->middleware('auth');
 
-Route::get('locations/delete/{locationId}', 'LocationsController@delete')
-    ->name('locations.delete')->middleware('auth');
+    Route::get('delete/{locationId}', 'LocationsController@delete')
+        ->name('locations.delete')->middleware('auth');
 
-Route::get('locations', 'LocationsController@index')
-    ->name('locations.index')->middleware('auth');
+    Route::get('', 'LocationsController@index')
+        ->name('locations.index')->middleware('auth');
+});
+
+Route::prefix('gear')->group(function () {
+    Route::post('save', 'GearController@save')
+        ->name('gear.save')->middleware('auth');
+
+    Route::get('delete/{gearId}', 'GearController@delete')
+        ->name('gear.delete')->middleware('auth');
+
+    Route::get('', 'GearController@index')
+        ->name('gear.index')->middleware('auth');
+});
+
+Route::prefix('ammo')->group(function () {
+    Route::post('save', 'AmmoController@save')
+        ->name('ammo.save')->middleware('auth');
+
+    Route::get('delete/{ammoId}', 'AmmoController@delete')
+        ->name('ammo.delete')->middleware('auth');
+
+    Route::get('', 'AmmoController@index')
+        ->name('ammo.index')->middleware('auth');
+});
+
+Route::prefix('practice')->group(function () {
+    Route::get('add/{practiceId}', 'PracticeController@addElements')
+        ->name('practice.add')->middleware('auth');
+
+    Route::post('save', 'PracticeController@save')
+        ->name('practice.save')->middleware('auth');
+
+    Route::post('addTarget', 'PracticeController@addTarget')
+        ->name('practice.addTarget')->middleware('auth');
+
+    Route::get('delete/{practiceId}', 'PracticeController@delete')
+        ->name('practice.delete')->middleware('auth');
+
+    Route::get('', 'PracticeController@index')
+        ->name('practice.index')->middleware('auth');
+});
+

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \Input as Input;
 use Auth;
 use App\Models\Location;
 
@@ -18,7 +17,8 @@ class LocationsController extends Controller
         $locations = Location::where('user_id', '=', $user->id)->orderBy('name')->get();
 
         return view('locations', [
-            'locations' => $locations
+            'locations' => $locations,
+            'file' => 'max:5120', //5MB
         ]);
     }
 

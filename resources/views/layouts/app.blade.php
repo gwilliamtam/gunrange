@@ -16,11 +16,9 @@
     <link href="{{ asset('css/gunrange.css') }}" rel="stylesheet">
 
     <!-- Script -->
-    <script
-            src="http://code.jquery.com/jquery-3.3.1.js"
+    <script src="http://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
-
 </head>
 <body>
     <div id="app">
@@ -54,9 +52,9 @@
 
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Practice</a>
-                                    <a class="dropdown-item" href="#">Ammo</a>
-                                    <a class="dropdown-item" href="#">Gear</a>
+                                    <a class="dropdown-item" href="{{ route('practice.index') }}">Practice</a>
+                                    <a class="dropdown-item" href="{{ route('ammo.index') }}">Ammo</a>
+                                    <a class="dropdown-item" href="{{ route('gear.index') }}">Gear</a>
                                     <a class="dropdown-item" href="{{ route('locations.index') }}">Locations</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('home') }}">My Dashboard</a>
@@ -110,5 +108,13 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <script>
+        function setCookie(key, value) {
+            var expires = new Date();
+            expires.setTime(expires.getTime() + (1 * 24 * 60 * 60 * 1000));
+            document.cookie = key + '=' + value +';path=/'+ ';expires=' + expires.toUTCString();
+        }
+    </script>
 </body>
 </html>

@@ -17,12 +17,14 @@ class CreatePracticeHeader extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->dateTime('date_time');
-            $table->integer('location_id');
-            $table->decimal('amount');
-            $table->decimal('amount_lane');
-            $table->decimal('amount_ammo');
-            $table->decimal('amount_rent');
-            $table->decimal('amount_other');
+            $table->integer('location_id')->nullable();
+            $table->integer('gear_id')->nullable();
+            $table->integer('ammo_id')->nullable();
+            $table->decimal('amount')->nullable();
+            $table->decimal('amount_lane')->nullable();
+            $table->decimal('amount_ammo')->nullable();
+            $table->decimal('amount_rent')->nullable();
+            $table->decimal('amount_other')->nullable();
             $table->timestamps();
         });
     }

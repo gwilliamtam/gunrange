@@ -1,26 +1,11 @@
+
+/* LOCATION */
 .locations-header{
     padding: .5em;
 }
 
 #add-location-options{
     margin-bottom: 20px;
-}
-
-.main-container{
-    margin-top: 50px;
-}
-
-#photo-preview{
-    max-width: 100px;
-    max-height: 100px;
-}
-
-.errors{
-    position: fixed;
-    top: 65px;
-    left: 65px;
-    right: 65px;
-    z-index: 20;
 }
 
 .card-location-image {
@@ -39,6 +24,152 @@
     vertical-align:middle;
 }
 
+/* GEAR */
+.gear-header{
+    padding: .5em;
+}
+
+#add-gear-options{
+    margin-bottom: 20px;
+}
+
+.card-gear-image {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    /*display: table;*/
+    text-align: center;
+    background-color: rgba(0,0,0,.3);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.card-gear-image h1{
+    display:table-cell;
+    vertical-align:middle;
+}
+
+/* AMMO */
+.ammo-header{
+    padding: .5em;
+}
+
+#add-ammo-options{
+    margin-bottom: 20px;
+}
+
+.card-ammo-image {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    /*display: table;*/
+    text-align: center;
+    background-color: rgba(0,0,0,.3);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.card-ammo-image h1{
+    display:table-cell;
+    vertical-align:middle;
+}
+
+/* PRACTICE */
+.practice-header{
+    padding: .5em;
+}
+
+#add-practice-options{
+    margin-bottom: 20px;
+}
+
+.card-practice-images {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    /*display: table;*/
+    background-color: rgba(127,127,127, .06);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    overflow-x: hidden;
+    padding-top: 5px;
+}
+
+.practice-element{
+    background-size: cover;
+    background-position: center;
+    background-color: white;
+    float: left;
+    display: flex;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    border: 1px solid rgba(0,0,0,.5);
+    border-radius: 5px;
+    margin: 10px 0 0 10px;
+}
+
+.target-value{
+    margin-top: 10px;
+    background-color: rgba(255,255,255,.9);
+    border: 1px solid rgba(255,255,255,.5);
+    border-radius: 2px;
+    height: 20px;
+    line-height: 1em;
+}
+
+#view-model .modal-body{
+    text-align: center;
+}
+
+.view-model-img{
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.card-practice-images h1{
+    display:table-cell;
+    vertical-align:middle;
+}
+
+#date-time{
+    border: none;
+    text-align: center;
+    font-size: 1.7em;
+    font-weight: bold;
+}
+
+#dateTimeHelp{
+    text-align: center;
+}
+
+.practice-element img{
+    border: none;
+    border-radius: 5px;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto auto;
+}
+/* END PRACTICE */
+
+.main-container{
+    margin-top: 50px;
+}
+
+#photo-preview{
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.errors{
+    position: fixed;
+    top: 65px;
+    left: 65px;
+    right: 65px;
+    z-index: 20;
+}
+
 .card{
     border-radius: 5px;
 }
@@ -49,6 +180,30 @@
 .dashboard-card .card-link{
     margin-left: 5px;
 }
+
+.tabs-submenu{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.tabs-submenu .btn-group{
+    background-color: white;
+}
+
+/* DATE PICKER */
+.card.date-picker{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.date-picker .slider input{
+    width: 100%;
+}
+
+.value-picker, .control-picker{
+    width: 100%;
+    margin: 0 20px 0 20px;
+}
+/* END DATE PICKER */
 
 @media screen and (min-width: 991px) {
     .dashboard-card{

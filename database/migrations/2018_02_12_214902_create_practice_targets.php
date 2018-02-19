@@ -16,10 +16,8 @@ class CreatePracticeTargets extends Migration
         Schema::create('practice_targets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('header_id');
-            $table->integer('ammo_id');
-            $table->integer('order');
-            $table->decimal('value');
-            $table->string('image');
+            $table->decimal('value')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

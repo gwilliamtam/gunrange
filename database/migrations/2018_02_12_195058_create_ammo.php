@@ -16,11 +16,12 @@ class CreateAmmo extends Migration
         Schema::create('ammo', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->string('manufacturer');
-            $table->string('caliber');
-            $table->string('type');
-            $table->text('notes');
-            $table->string('image');
+            $table->string('name');
+            $table->string('manufacturer')->nullable();
+            $table->string('caliber')->nullable();
+            $table->string('type')->nullable();
+            $table->text('notes')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

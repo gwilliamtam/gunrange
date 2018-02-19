@@ -1,16 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-
     @include('partials.tabs', [
-        'blade' => 'locations'
+        'blade' => 'gear'
     ])
 
     <section>
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <label id="add-location-button" class="btn btn-dark my-2" style="width: 100%">Add a Location</label>
+                    <label id="add-gear-button" class="btn btn-dark my-2" style="width: 100%">Add Gear</label>
                 </div>
             </div>
         </div>
@@ -20,34 +19,26 @@
         <div class="container">
 
             <div class="row">
-                @foreach($locations as $location)
+                @foreach($gears as $gear)
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
 
-                        @if(empty($location->photo))
-                            <div class="card-location-image">
-                                <h1 class="text-center">{{ $location->name }}</h1>
+                        @if(empty($gear->photo))
+                            <div class="card-gear-image">
+                                <h1 class="text-center">{{ $gear->name }}</h1>
                             </div>
                         @else
-                            <div class="card-location-image" style="background-image: url('/loc_images/{{ $location->photo }}');">
+                            <div class="card-gear-image" style="background-image: url('/gear_images/{{ $gear->photo }}');">
                             </div>
                         @endif
 
                         <div class="card-body">
-                            <h4 class="card-text">{{ $location->name }}</h4>
-                            @if(false and !empty($location->address))
-                                <small class="text-muted">{{ $location->address }}</small>
-                            @endif
+                            <h4 class="card-text">{{ $gear->name }}</h4>
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group" data-id="{{ $location->id }}" data-json="{{ json_encode($location) }}">
+                                <div class="btn-group" data-id="{{ $gear->id }}" data-json="{{ json_encode($gear) }}">
                                     <button type="button" class="btn btn btn-dark target-action">
                                         <i class="fas fa-bullseye"></i>
                                     </button>
-                                    @php
-                                    #<button type="button" class="btn btn btn-dark map-action">
-                                    #    <i class="fas fa-map"></i>
-                                    #</button>
-                                    @endphp
                                     <button type="button" class="btn btn btn-dark edit-action">
                                         <i class="fas fa-edit"></i>
                                     </button>
@@ -64,9 +55,9 @@
         </div>
     </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id="add-location-modal">
-        <form action="{{ route('locations.save') }}" method="post" enctype="multipart/form-data" id="location-form">
-            <input type="hidden" id="location-id" name="locationId" value="">
+    <div class="modal" tabindex="-1" role="dialog" id="add-gear-modal">
+        <form action="{{ route('gear.save') }}" method="post" enctype="multipart/form-data" id="gear-form">
+            <input type="hidden" id="gear-id" name="gearId" value="">
             <input type="hidden" id="photo-changed" name="photoChanged" value=0>
             <input type="hidden" value="{{ csrf_token() }}" name="_token">
 
@@ -80,11 +71,10 @@
                     </div>
                     <div class="modal-body">
 
-                        {{-- Location Name --}}
+                        {{-- Gear Name --}}
                         <div class="form-group">
-                            {{--<label for="name">Location Name</label>--}}
-                            <input type="text" class="form-control" name="name" id="name" aria-describedby="name" placeholder="Enter location name">
-                            <small id="nameHelp" class="form-text text-muted">You may enter the name or any alias for your gun range location(required)</small>
+                            <input type="text" class="form-control" name="name" id="name" aria-describedby="name" placeholder="Enter gear name">
+                            <small id="nameHelp" class="form-text text-muted">You may enter the name or any alias for your gear(required)</small>
                         </div>
 
 
@@ -93,13 +83,8 @@
                             <label for="photo" class="btn btn-outline-dark">Select Photo</label>
                             <input type="file" accept="image/*" style="visibility:hidden;" name="photo" id="photo">
                             <img id="photo-preview">
-                            <small id="photoHelp" class="form-text text-muted">Select a photo from your device for this location (optional)</small>
+                            <small id="photoHelp" class="form-text text-muted">Select a photo from your device for this gear (optional)</small>
                         </div>
-
-                        @php
-                        #include("partials.locations-additional-fields")
-                        @endphp
-
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-dark">Save</button>
@@ -116,19 +101,19 @@
             function blankForm()
             {
                 $("#name").val('');
-                $(".location-options input").val('')
+                $(".gear-options input").val('')
                 var preview = document.getElementById('photo-preview');
                 preview.src = '';
             }
 
-            $("#add-location-button").on("click", function(){
-                $(".location-options").hide()
+            $("#add-gear-button").on("click", function(){
+                $(".gear-options").hide()
                 blankForm()
-                $(".modal-title").html("Add Location")
-                $("#add-location-modal").modal("show")
+                $(".modal-title").html("Add Gear")
+                $("#add-gear-modal").modal("show")
             })
 
-            $(".location-options-group .btn").on("click", function(){
+            $(".gear-options-group .btn").on("click", function(){
                 var fieldTag = "#field-" + this.id
                 $(fieldTag).show()
             })
@@ -137,7 +122,7 @@
                 var fieldTag = '#'+this.parentElement.id
                 $(fieldTag+ " input").val('')
                 $(fieldTag).hide()
-                $(".location-options-group label").removeClass('active')
+                $(".gear-options-group label").removeClass('active')
             })
 
             $("#photo").on("change", function(){
@@ -151,42 +136,31 @@
             }
 
             $(".del-action").on("click", function(){
-                if(confirm('You select to remove a location. Continue?')){
+                if(confirm('You select to remove a gear. Continue?')){
                     var dataId = this.parentElement.attributes['data-id'].value
-                    document.location = '/locations/delete/' + dataId
+                    document.location = '/gear/delete/' + dataId
                 }
             })
 
             $(".edit-action").on("click", function(){
-                var location = JSON.parse(this.parentElement.attributes['data-json'].value)
-                $(".location-options").hide()
+                var gear = JSON.parse(this.parentElement.attributes['data-json'].value)
+                $(".gear-options").hide()
                 blankForm()
-                $(".modal-title").html("Edit Location")
-console.log(location)
-                $("#location-form input[name=name]").val(location.name)
-                $("#location-id").val(location.id)
-                if(location.address != null){
-                    $("#address").val(location.address)
-                    $("#field-address-input").show()
-                }
-                if(location.coordinates != null){
-                    $("#coordinates").val(location.coordinates)
-                    $("#field-coordinates-input").show()
-                }
-                if(location.map != null) {
-                    $("#map").val(location.map)
-                    $("#field-map-input").show()
-                }
+                $(".modal-title").html("Edit Gear")
+
+                $("#gear-form input[name=name]").val(gear.name)
+                $("#gear-id").val(gear.id)
 
                 var preview = document.getElementById('photo-preview');
-                preview.src = '/loc_images/'+location.photo;
+                preview.src = '/gear_images/'+gear.photo;
 
-                $("#add-location-modal").modal("show")
+                $("#add-gear-modal").modal("show")
             })
 
             $(".target-action").on("click", function(){
-                var location = JSON.parse(this.parentElement.attributes['data-json'].value)
-                setCookie("location", location.id);
+                console.log('target action')
+                var gear = JSON.parse(this.parentElement.attributes['data-json'].value)
+                setCookie("gear", gear.id);
             })
         })
     </script>
