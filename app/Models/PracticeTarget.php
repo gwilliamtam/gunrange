@@ -29,4 +29,16 @@ class PracticeTarget extends Model
         $this->save();
 
     }
+
+    public function removeSeconds()
+    {
+        $dateTime = $this->date_time;
+
+
+        if(empty($this->date_time)) {
+            return null;
+        }
+
+        return substr($dateTime, 0, strrpos($dateTime,":"));
+    }
 }

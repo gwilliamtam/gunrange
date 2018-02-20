@@ -25,9 +25,9 @@
 
         <div class="col-md">
             @component('partials.dashboard-card', [
-                'title' => 'Gear',
+                'title' => 'Firearm',
                 'link' => route('gear.index'),
-                'text' => 'You have the option on include a photo of the gear configuration you are using today even is rental, borrow or owned.'
+                'text' => 'You have the option on include a photo of the firearm configuration you are using in your practice even is rented, borrowed or owned.'
             ])
             @endcomponent
         </div>

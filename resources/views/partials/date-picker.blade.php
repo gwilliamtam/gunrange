@@ -1,6 +1,5 @@
 <div class="card date-picker" id="date-picker">
     <div class="card-body">
-
         {{--year--}}
         <div class="row">
             <div class="value-picker year-col">
@@ -75,6 +74,23 @@
     var minutes = {{ date("i") }}
 
     setEndOfTheMonth()
+
+    function setSliders(timeValueJson){
+        var timeValue = JSON.parse(timeValueJson)
+        console.log("x",timeValue.date_time)
+
+        $("#year-slider").val(timeValue.date_time.substr(0,4))
+        $("#month-slider").val(timeValue.date_time.substr(5,2))
+        $("#day-slider").val(timeValue.date_time.substr(8,2))
+        $("#hours-slider").val(timeValue.date_time.substr(11,2))
+        $("#minutes-slider").val(timeValue.date_time.substr(14,2))
+
+        yearChange()
+        monthChange()
+        dayChange()
+        hoursChange()
+        minutesChange()
+    }
 
     function setEndOfTheMonth(){
         if( (year % 4) == 0){

@@ -204,10 +204,11 @@
 
             $(".edit-action").on("click", function(){
                 var practice = JSON.parse(this.parentElement.attributes['data-json'].value)
-                blankForm()
+                setSliders(this.parentElement.attributes['data-json'].value)
                 $(".modal-title").html("Edit Practice")
 
-                $("#practice-form input[name=dateTime]").val(practice.date_time)
+                $("#practice-form input[name=practiceId]").val(practice.id)
+                $("#practice-form input[name=date_time]").val(practice.date_time)
                 $("#practice-id").val(practice.id)
 
                 $("#add-practice-modal").modal("show")

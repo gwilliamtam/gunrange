@@ -10,11 +10,12 @@
 
 .card-location-image {
     height: 250px;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
+    background-repeat: no-repeat;
     /*display: table;*/
     text-align: center;
-    background-color: rgba(0,0,0,.3);
+    background-color: rgba(0,0,0,0);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -35,11 +36,12 @@
 
 .card-gear-image {
     height: 250px;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
+    background-repeat: no-repeat;
     /*display: table;*/
     text-align: center;
-    background-color: rgba(0,0,0,.3);
+    background-color: rgba(0,0,0,0);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -60,11 +62,12 @@
 
 .card-ammo-image {
     height: 250px;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
+    background-repeat: no-repeat;
     /*display: table;*/
     text-align: center;
-    background-color: rgba(0,0,0,.3);
+    background-color: rgba(0,0,0,0);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }

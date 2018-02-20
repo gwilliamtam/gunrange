@@ -29,5 +29,4 @@ class PracticeHeader extends Model
     {
         return $this->hasMany('App\Models\PracticeTarget', 'header_id', 'id');
     }
-
 }

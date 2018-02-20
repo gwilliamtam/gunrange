@@ -54,7 +54,7 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('practice.index') }}">Practice</a>
                                     <a class="dropdown-item" href="{{ route('ammo.index') }}">Ammo</a>
-                                    <a class="dropdown-item" href="{{ route('gear.index') }}">Gear</a>
+                                    <a class="dropdown-item" href="{{ route('gear.index') }}">Firearm</a>
                                     <a class="dropdown-item" href="{{ route('locations.index') }}">Locations</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('home') }}">My Dashboard</a>

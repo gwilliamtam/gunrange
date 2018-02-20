@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <label id="add-gear-button" class="btn btn-dark my-2" style="width: 100%">Add Gear</label>
+                    <label id="add-gear-button" class="btn btn-dark my-2" style="width: 100%">Add Firearm</label>
                 </div>
             </div>
         </div>
@@ -73,8 +73,8 @@
 
                         {{-- Gear Name --}}
                         <div class="form-group">
-                            <input type="text" class="form-control" name="name" id="name" aria-describedby="name" placeholder="Enter gear name">
-                            <small id="nameHelp" class="form-text text-muted">You may enter the name or any alias for your gear(required)</small>
+                            <input type="text" class="form-control" name="name" id="name" aria-describedby="name" placeholder="Enter firearm name">
+                            <small id="nameHelp" class="form-text text-muted">You may enter the name or any alias for your firearm (optional)</small>
                         </div>
 
 
@@ -83,7 +83,7 @@
                             <label for="photo" class="btn btn-outline-dark">Select Photo</label>
                             <input type="file" accept="image/*" style="visibility:hidden;" name="photo" id="photo">
                             <img id="photo-preview">
-                            <small id="photoHelp" class="form-text text-muted">Select a photo from your device for this gear (optional)</small>
+                            <small id="photoHelp" class="form-text text-muted">Select a photo from your device for this firearm (optional)</small>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -109,7 +109,7 @@
             $("#add-gear-button").on("click", function(){
                 $(".gear-options").hide()
                 blankForm()
-                $(".modal-title").html("Add Gear")
+                $(".modal-title").html("Add Firearm")
                 $("#add-gear-modal").modal("show")
             })
 
@@ -136,7 +136,7 @@
             }
 
             $(".del-action").on("click", function(){
-                if(confirm('You select to remove a gear. Continue?')){
+                if(confirm('You select to remove a firearm. Continue?')){
                     var dataId = this.parentElement.attributes['data-id'].value
                     document.location = '/gear/delete/' + dataId
                 }
@@ -146,7 +146,7 @@
                 var gear = JSON.parse(this.parentElement.attributes['data-json'].value)
                 $(".gear-options").hide()
                 blankForm()
-                $(".modal-title").html("Edit Gear")
+                $(".modal-title").html("Edit Firearm")
 
                 $("#gear-form input[name=name]").val(gear.name)
                 $("#gear-id").val(gear.id)

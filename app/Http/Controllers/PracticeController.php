@@ -27,9 +27,11 @@ class PracticeController extends Controller
     public function save(Request $request)
     {
         $user = Auth::user();
-
         $commaPos = strpos($request->date_time, ",");
-        $request->date_time = substr($request->date_time, $commaPos + 2) . ":00";
+        if(substr_count($request->date_time,":") == 1){
+            $request->date_time = substr($request->date_time, $commaPos + 2) . ":00";
+        }
+
 
         $validatedData = $request->validate([
             'date_time' => 'required',
