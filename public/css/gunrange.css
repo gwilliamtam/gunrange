@@ -219,9 +219,22 @@
     .dashboard-card{
         min-height: 200px;
     }
+
+
+    #terms-modal .modal-dialog{
+        width: 750px;
+        max-width: 750px;
+    }
 }
 @media screen and (min-width: 769px) and (max-width: 991px) {
     .dashboard-card{
         min-height: 260px;
     }
+
+
+    #terms-modal .modal-dialog{
+        width: 90%;
+        max-width: 750px;
+    }
+
 }
