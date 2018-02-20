@@ -41,7 +41,7 @@
                                 @endif
 
                                 @foreach($practice->targets as $target)
-                                    <div class="practice-element target-element" style="background-image: url('/target_images/{{ $target->photo }}');" data-img="/target_images/{{ $target->photo }}" data-value="{{ $target->value }}">
+                                    <div class="practice-element target-element" style="background-image: url('/target_images/{{ $target->photo }}');" data-img="{{ $target->photo }}" data-value="{{ $target->value }}">
                                         @if(!empty($target->value))
                                             <div class="target-value">
                                                 {{ $target->value }}
@@ -237,7 +237,7 @@
             $(".practice-element").on("click", function(){
                 var image = this.attributes['data-img'].value
                 $("#view-target-image").attr("src", image)
-                $("#value").hide()
+                $("#edit-target-value").hide()
                 $("#view-modal").modal("show")
             })
 
@@ -246,7 +246,7 @@
                 var targetValue = this.attributes['data-value'].value
                 console.log(image, targetValue, image.length, targetValue.length)
                 if(image.length>0){
-                    $("#view-target-image").attr("src", image)
+                    $("#view-target-image").attr("src", "/target_images/" +  image)
                     $("#view-target-image").show()
                 }else{
                     $("#view-target-image").hide()
