@@ -25,23 +25,23 @@
 
                             <div class="card-practice-images">
                                 @if($practice->location)
-                                    <div class="practice-element" data-img="/loc_images/{{ $practice->location->photo }}">
+                                    <div class="practice-element" data-img="/loc_images/{{ $practice->location->photo }}" data-name="{{ $practice->location->name }}" data-id="{{ $practice->id }}" data-type="location">
                                         <img src="/loc_images/{{ $practice->location->photo }}">
                                     </div>
                                 @endif
                                 @if($practice->gear)
-                                    <div class="practice-element" data-img="/gear_images/{{ $practice->gear->photo }}">
+                                    <div class="practice-element" data-img="/gear_images/{{ $practice->gear->photo }}" data-name="{{ $practice->gear->name }}" data-id="{{ $practice->id }}" data-type="gear">
                                         <img src="/gear_images/{{ $practice->gear->photo }}">
                                     </div>
                                 @endif
                                 @if($practice->ammo)
-                                    <div class="practice-element" data-img="/ammo_images/{{ $practice->ammo->photo }}">
+                                    <div class="practice-element" data-img="/ammo_images/{{ $practice->ammo->photo }}" data-name="{{ $practice->ammo->name }}" data-id="{{ $practice->id }}" data-type="ammo">
                                         <img src="/ammo_images/{{ $practice->ammo->photo }}">
                                     </div>
                                 @endif
 
                                 @foreach($practice->targets as $target)
-                                    <div class="practice-element target-element" style="background-image: url('/target_images/{{ $target->photo }}');" data-img="{{ $target->photo }}" data-value="{{ $target->value }}">
+                                    <div class="target-element" style="background-image: url('/target_images/{{ $target->photo }}');" data-img="{{ $target->photo }}" data-value="{{ $target->value }}" data-rounds="{{ $target->rounds }}" data-id="{{ $target->id }}">
                                         @if(!empty($target->value))
                                             <div class="target-value">
                                                 {{ $target->value }}
@@ -130,8 +130,14 @@
 
                                 {{-- Target Value --}}
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="value" id="value" aria-describedby="value" placeholder="Enter target value">
+                                    <input type="text" class="form-control" name="value" id="value" aria-describedby="valueHelp" placeholder="Enter target value">
                                     <small id="valueHelp" class="form-text text-muted">You may enter the target value(optional)</small>
+                                </div>
+
+                                {{-- Rounds --}}
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="rounds" id="value" aria-describedby="roundsHelp" placeholder="Enter number or rounds">
+                                    <small id="valueHelp" class="form-text text-muted">You may enter the number of rounds used(optional)</small>
                                 </div>
 
                                 {{-- Photo Upload --}}
@@ -161,16 +167,25 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        <input type="hidden" id="view-id" value="">
+                        <input type="hidden" id="view-type" value="">
                         <div class="modal-body view-modal-img-container">
                             <img id="view-target-image">
                             {{-- Target Value --}}
                             <div class="form-group" id="edit-target-value">
-                                <input type="text" class="form-control" name="value" id="targetValue" aria-describedby="value" placeholder="Enter target value">
-                                <small id="valueHelp" class="form-text text-muted">You may enter the target value(optional)</small>
+                                <input type="text" class="form-control" name="value" id="targetValue" aria-describedby="valueHelp" placeholder="Enter target value">
+                                <small id="valueHelp" class="form-text text-muted">You may enter the target value (optional)</small>
                             </div>
+                            {{-- Target Value --}}
+                            <div class="form-group" id="edit-target-rounds">
+                                <input type="text" class="form-control" name="value" id="targetRounds" aria-describedby="roundsHelp" placeholder="Enter number of rounds">
+                                <small id="roundsHelp" class="form-text text-muted">You may enter the number of rounds used (optional)</small>
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-dark">Save</button>
+                            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Remove</button>
                             <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -237,14 +252,24 @@
 
             $(".practice-element").on("click", function(){
                 var image = this.attributes['data-img'].value
+                var name =  this.attributes['data-name'].value
+                var id =  this.attributes['data-id'].value
+                var type =  this.attributes['data-type'].value
+                $("#view-id").val(id)
+                $("#view-type").val(type)
                 $("#view-target-image").attr("src", image)
                 $("#edit-target-value").hide()
+                $("#edit-target-rounds").hide()
+                $("#view-modal .modal-title").html(name)
                 $("#view-modal").modal("show")
             })
 
             $(".target-element").on("click", function(){
                 var image = this.attributes['data-img'].value
                 var targetValue = this.attributes['data-value'].value
+                var targetRounds = this.attributes['data-rounds'].value
+                var id =  this.attributes['data-id'].value
+                $("#view-id").val(id)
                 console.log(image, targetValue, image.length, targetValue.length)
                 if(image.length>0){
                     $("#view-target-image").attr("src", "/target_images/" +  image)
@@ -253,12 +278,15 @@
                     $("#view-target-image").hide()
                 }
 
-                if(targetValue.length>0){
                     $("#targetValue").val(targetValue)
                     $("#edit-target-value").show()
-                }else{
-                    $("#edit-target-value").hide()
-                }
+
+
+                    $("#targetRounds").val(targetRounds)
+                    $("#edit-target-rounds").show()
+
+
+                $("#view-modal .modal-title").html('Target')
                 $("#view-modal").modal("show")
             })
         })

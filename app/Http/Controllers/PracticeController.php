@@ -94,8 +94,13 @@ class PracticeController extends Controller
     {
         $practiceTarget = new PracticeTarget();
         $practiceTarget->header_id = $request->practiceId;
+
         if(!empty($request->value)){
             $practiceTarget->value = $request->value;
+        }
+
+        if(!empty($request->rounds)){
+            $practiceTarget->rounds = $request->rounds;
         }
 
         // Save now because we need the id for the image name

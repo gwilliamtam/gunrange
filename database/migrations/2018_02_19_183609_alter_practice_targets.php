@@ -14,7 +14,7 @@ class AlterPracticeTargets extends Migration
     public function up()
     {
         Schema::table('practice_targets', function (Blueprint $table) {
-            $table->integer('rounds');
+            $table->integer('rounds')->nullable();
         });
     }
 
