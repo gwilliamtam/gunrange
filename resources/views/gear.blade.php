@@ -36,8 +36,12 @@
                             <h4 class="card-text">{{ $gear->name }}</h4>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group" data-id="{{ $gear->id }}" data-json="{{ json_encode($gear) }}">
+                                    @if($pin == $gear->id)
+                                    <button type="button" class="btn btn btn-success target-action">
+                                    @else
                                     <button type="button" class="btn btn btn-dark target-action">
-                                        <i class="fas fa-bullseye"></i>
+                                    @endif
+                                        <i class="fas fa-thumbtack"></i>
                                     </button>
                                     <button type="button" class="btn btn btn-dark edit-action">
                                         <i class="fas fa-edit"></i>
@@ -132,7 +136,11 @@
 
             var loadFile = function(event) {
                 var preview = document.getElementById('photo-preview');
-                preview.src = URL.createObjectURL(event.target.files[0]);
+                if(event.target.files[0] != undefined) {
+                    preview.src = URL.createObjectURL(event.target.files[0]);
+                }else{
+                    preview.src = ''
+                }
             }
 
             $(".del-action").on("click", function(){
@@ -160,6 +168,10 @@
             $(".target-action").on("click", function(){
                 console.log('target action')
                 var gear = JSON.parse(this.parentElement.attributes['data-json'].value)
+                $(".target-action").removeClass("btn-success");
+                $(".target-action").addClass("btn-dark");
+                $(this).removeClass("btn-dark")
+                $(this).addClass("btn-success")
                 setCookie("gear", gear.id);
             })
         })

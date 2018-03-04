@@ -17,7 +17,8 @@ class AmmoController extends Controller
         $ammos = Ammo::where('user_id', '=', $user->id)->orderBy('name')->get();
 
         return view('ammo', [
-            'ammos' => $ammos
+            'ammos' => $ammos,
+            'pin' => empty($_COOKIE['ammo']) ? null : $_COOKIE['ammo'],
         ]);
     }
 
@@ -34,8 +35,8 @@ class AmmoController extends Controller
             $ammo = new Ammo();
         }else{
             $query = Ammo::where('user_id', '=', $user->id)
-                ->where('id', '=', $request->gearId);
-            $gear = $query->first();
+                ->where('id', '=', $request->ammoId);
+            $ammo = $query->first();
         }
         $ammo->user_id = $user->id;
         $ammo->name = $request->name;

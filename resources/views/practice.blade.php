@@ -5,6 +5,7 @@
         'blade' => 'practice'
     ])
 
+    @if(empty($pin))
     <section>
         <div class="container">
             <div class="row">
@@ -14,34 +15,40 @@
             </div>
         </div>
     </section>
+    @endif
 
     <div class="album bg-light">
         <div class="container">
 
             <div class="row">
                 @foreach($practices as $practice)
+                    <a name="practice{{ $practice->id }}"></a>
                     <div class="col-md-4">
-                        <div class="card mb-4 box-shadow card-practice-container">
+                        <div class="card mb-4 box-shadow card-practice-container" id="card{{$practice->id}}">
 
                             <div class="card-practice-images">
                                 @if($practice->location)
-                                    <div class="practice-element" data-img="/loc_images/{{ $practice->location->photo }}" data-name="{{ $practice->location->name }}" data-id="{{ $practice->id }}" data-type="location">
+                                    <div class="practice-element" id="loc{{ $practice->id }}" data-json="{{ json_encode($practice->location) }}" data-type="loc">
                                         <img src="/loc_images/{{ $practice->location->photo }}">
                                     </div>
                                 @endif
                                 @if($practice->gear)
-                                    <div class="practice-element" data-img="/gear_images/{{ $practice->gear->photo }}" data-name="{{ $practice->gear->name }}" data-id="{{ $practice->id }}" data-type="gear">
+                                    <div class="practice-element" id="gear{{ $practice->id }}" data-json="{{ json_encode($practice->gear) }}" data-type="gear">
                                         <img src="/gear_images/{{ $practice->gear->photo }}">
                                     </div>
                                 @endif
                                 @if($practice->ammo)
-                                    <div class="practice-element" data-img="/ammo_images/{{ $practice->ammo->photo }}" data-name="{{ $practice->ammo->name }}" data-id="{{ $practice->id }}" data-type="ammo">
+                                    <div class="practice-element" id="ammo{{ $practice->id }}" data-json="{{ json_encode($practice->ammo) }}" data-type="ammo">
                                         <img src="/ammo_images/{{ $practice->ammo->photo }}">
                                     </div>
                                 @endif
 
                                 @foreach($practice->targets as $target)
-                                    <div class="target-element" style="background-image: url('/target_images/{{ $target->photo }}');" data-img="{{ $target->photo }}" data-value="{{ $target->value }}" data-rounds="{{ $target->rounds }}" data-id="{{ $target->id }}">
+                                    @if(empty($target->photo))
+                                    <div class="target-element" id="target{{ $target->id }}" data-json="{{ json_encode($target) }}">
+                                    @else
+                                    <div class="target-element" id="target{{ $target->id }}" style="background-image: url('/target_images/{{ $target->photo }}');" data-json="{{ json_encode($target) }}">
+                                    @endif
                                         @if(!empty($target->value))
                                             <div class="target-value">
                                                 {{ $target->value }}
@@ -59,15 +66,30 @@
                                         <button type="button" class="btn btn btn-dark target-action">
                                             <i class="fas fa-bullseye"></i>
                                         </button>
-                                        <button type="button" class="btn btn btn-dark add-action">
-                                            <i class="fas fa-plus"></i>
+
+                                        @if( empty($pinAmmo) && empty($pinGear) && empty($pinLocation))
+                                        <button type="button" class="btn btn btn-dark add-action" >
+                                        @else
+                                        <button type="button" class="btn btn btn-success add-action" style="{{ empty($practice->ammo_id) || empty($practice->gear_id) || empty($practice->location->id) ? null :'display:none' }}">
+                                        @endif
+                                            <i class="fas fa-magic"></i>
                                         </button>
+
                                         <button type="button" class="btn btn btn-dark edit-action">
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <button type="button" class="btn btn btn-dark del-action" >
                                             <i class="fas fa-times"></i>
                                         </button>
+                                        @if($pin == $practice->id)
+                                            <button type="button" class="btn btn btn-success unpin-action" >
+                                                <i class="fas fa-unlock"></i>
+                                            </button>
+                                        @else
+                                            <button type="button" class="btn btn btn-dark pin-action" >
+                                                <i class="fas fa-lock"></i>
+                                        </button>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -184,8 +206,8 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-dark">Save</button>
-                            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Remove</button>
+                            <button type="buton" class="btn btn-dark" id="button-view-save" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-outline-dark" id="button-view-remove" data-dismiss="modal">Remove</button>
                             <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -247,47 +269,120 @@
 
             var loadFile = function(event) {
                 var preview = document.getElementById('photo-preview');
-                preview.src = URL.createObjectURL(event.target.files[0]);
+                if(event.target.files[0] != undefined){
+                    preview.src = URL.createObjectURL(event.target.files[0]);
+                }else{
+                    preview.src = ''
+                }
             }
 
             $(".practice-element").on("click", function(){
-                var image = this.attributes['data-img'].value
-                var name =  this.attributes['data-name'].value
-                var id =  this.attributes['data-id'].value
+                var elementId = this.id
+                var practiceElement = JSON.parse(this.attributes['data-json'].value)
                 var type =  this.attributes['data-type'].value
-                $("#view-id").val(id)
+                $("#view-id").val(elementId)
                 $("#view-type").val(type)
-                $("#view-target-image").attr("src", image)
+                if(practiceElement.photo != null){
+                    $("#view-target-image").attr("src", "/"+type+"_images/"+practiceElement.photo)
+                    $("#view-target-image").show()
+                }else{
+                    $("#view-target-image").hide()
+                }
                 $("#edit-target-value").hide()
                 $("#edit-target-rounds").hide()
-                $("#view-modal .modal-title").html(name)
+                $("#button-view-save").hide()
+
+                $("#view-modal .modal-title").html(practiceElement.name)
                 $("#view-modal").modal("show")
             })
 
             $(".target-element").on("click", function(){
-                var image = this.attributes['data-img'].value
-                var targetValue = this.attributes['data-value'].value
-                var targetRounds = this.attributes['data-rounds'].value
-                var id =  this.attributes['data-id'].value
-                $("#view-id").val(id)
-                console.log(image, targetValue, image.length, targetValue.length)
-                if(image.length>0){
-                    $("#view-target-image").attr("src", "/target_images/" +  image)
+                var targetElement = JSON.parse(this.attributes['data-json'].value)
+                console.log(targetElement)
+                $("#view-id").val(targetElement.id)
+                $("#view-type").val("target")
+                if(targetElement.photo != null){
+                    $("#view-target-image").attr("src", "/target_images/" +  targetElement.photo)
                     $("#view-target-image").show()
                 }else{
                     $("#view-target-image").hide()
                 }
 
-                    $("#targetValue").val(targetValue)
-                    $("#edit-target-value").show()
+                $("#targetValue").val(targetElement.value)
+                $("#edit-target-value").show()
 
 
-                    $("#targetRounds").val(targetRounds)
-                    $("#edit-target-rounds").show()
+                $("#targetRounds").val(targetElement.rounds)
+                $("#edit-target-rounds").show()
 
 
                 $("#view-modal .modal-title").html('Target')
+
+                $("#button-view-save").show()
                 $("#view-modal").modal("show")
+            })
+
+            $("#button-view-save").on("click", function(){
+                var type = $("#view-type").val()
+                var id = $("#view-id").val()
+                var url = "/target/update/" + id
+                var rounds = $("#targetRounds").val()
+                var value = $("#targetValue").val()
+                var data = {
+                    "rounds": rounds,
+                    "value": value
+                }
+                $.ajax({
+                    url: url,
+                    data: data,
+                    context: document.body,
+                    success: function(returnData){
+                        console.log(returnData)
+                        $("#target"+id).attr('data-json', JSON.stringify(returnData))
+                    }
+                }).done(function() {
+                    $("#view-modal").modal("hide")
+                    $("#target"+id+" .target-value").html(value)
+                });
+
+            })
+
+            $("#button-view-remove").on("click", function(){
+                var type = $("#view-type").val()
+                if(type == "target"){
+                    var url = "/target/remove/target/" + $("#view-id").val()
+                    $.ajax({
+                        url: url,
+                        context: document.body
+                    }).done(function() {
+                        $("#view-modal").modal("hide")
+                        var cardId = "#target"+$("#view-id").val()
+                        $(cardId).remove()
+                    });
+                }else{
+                    var url = "/target/remove/" + type + "/" + $("#view-id").val()
+                    $.ajax({
+                        url: url,
+                        context: document.body
+                    }).done(function() {
+                        $("#view-modal").modal("hide")
+                        var cardId = "#"+$("#view-id").val()
+                        var parentId = $(cardId).parent().parent()[0].id
+                        $(cardId).remove()
+                        $("#"+parentId+ " .add-action").css('display','block')
+                    });
+                }
+            })
+
+            $(".pin-action").on("click", function(){
+                var dataId = this.parentElement.attributes['data-id'].value
+                setCookie("pinPractice", dataId);
+                document.location = "/practice"
+            })
+
+            $(".unpin-action").on("click", function(){
+                setCookie("pinPractice", '');
+                document.location = "/practice"
             })
         })
     </script>

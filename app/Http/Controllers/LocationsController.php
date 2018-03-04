@@ -19,6 +19,7 @@ class LocationsController extends Controller
         return view('locations', [
             'locations' => $locations,
             'file' => 'max:5120', //5MB
+            'pin' => empty($_COOKIE['location']) ? null : $_COOKIE['location'],
         ]);
     }
 

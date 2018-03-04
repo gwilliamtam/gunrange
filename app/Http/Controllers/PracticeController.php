@@ -10,17 +10,45 @@ use App\Models\PracticeTarget;
 class PracticeController extends Controller
 {
     protected $redirectTo = '/';
+    private $resultTrue = null;
+    private $resultFalse = null;
+
+    public function __construct()
+    {
+       $this->resultTrue = json_encode([
+            "result"=>true
+        ]);
+
+       $this->resultFalse = json_encode([
+            "result"=>false
+        ]);
+
+    }
 
     //
     public function index(Request $request)
     {
         $user = Auth::user();
-        $practices = PracticeHeader::where('user_id', '=', $user->id)
-            ->orderBy('date_time', 'desc')
-            ->get();
+
+        $practiceQuery = PracticeHeader::where('user_id', '=', $user->id);
+
+        $pinId = null;
+        if(!empty($_COOKIE['pinPractice'])){
+            $pinId = $_COOKIE['pinPractice'];
+            if(!empty($pinId)){
+                $practiceQuery->where('id', '=', $pinId);
+            }
+        }
+
+        $practices = $practiceQuery->orderBy('date_time', 'desc')->get();
+
         return view('practice', [
             'practices' => $practices,
-            'user' => $user
+            'user' => $user,
+            'pin' => $pinId,
+            'pinAmmo' => empty($_COOKIE['ammo']) ? null : $_COOKIE['ammo'],
+            'pinGear' => empty($_COOKIE['gear']) ? null : $_COOKIE['gear'],
+            'pinLocation' => empty($_COOKIE['location']) ? null : $_COOKIE['location'],
         ]);
     }
 
@@ -31,7 +59,6 @@ class PracticeController extends Controller
         if(substr_count($request->date_time,":") == 1){
             $request->date_time = substr($request->date_time, $commaPos + 2) . ":00";
         }
-
 
         $validatedData = $request->validate([
             'date_time' => 'required',
@@ -90,6 +117,49 @@ class PracticeController extends Controller
         return redirect()->route('practice.index');
     }
 
+    public function removePracticeElement(Request $request)
+    {
+        $user = Auth::user();
+        if(!empty($request->elementType) && !empty($request->practiceId)){
+
+            if($request->elementType == "target"){
+                $targetQuery = PracticeTarget::where('id', '=', $request->practiceId)->get();
+                if($targetQuery->count()>0) {
+
+                    $target = $targetQuery->first();
+                    if($target->header->user_id == $user->id){
+
+                        $target->delete();
+                        return json_encode([
+                            "result"=>true
+                        ]);
+                    }
+                }
+            }else{
+                $id = substr($request->practiceId, strlen($request->elementType));
+                $practiceQuery = PracticeHeader::where('user_id', '=', $user->id)
+                    ->where('id', '=', $id)->get();
+                if($practiceQuery->count()>0) {
+                    $practice = $practiceQuery->first();
+                    if($request->elementType == "loc"){
+                        $practice->location_id = null;
+                    }
+                    if($request->elementType == "gear"){
+                        $practice->gear_id = null;
+                    }
+                    if($request->elementType == "ammo"){
+                        $practice->ammo_id = null;
+                    }
+
+                    $practice->save();
+                    return $this->resultTrue;
+                }
+            }
+        }
+
+        return $this->resultFalse;
+    }
+
     public function addTarget(Request $request)
     {
         $practiceTarget = new PracticeTarget();
@@ -111,5 +181,27 @@ class PracticeController extends Controller
         }
 
         return redirect()->route('practice.index');
+    }
+
+    public function updateTarget(Request $request)
+    {
+        $user = Auth::user();
+        if (!empty($request->targetId)) {
+
+            $targetQuery = PracticeTarget::where('id', '=', $request->targetId)->get();
+            if ($targetQuery->count() > 0) {
+
+                $target = $targetQuery->first();
+                if ($target->header->user_id == $user->id) {
+                    $target->rounds = $request->rounds;
+                    $target->value = $request->value;
+                    $target->save();
+
+                    return $target;
+                }
+            }
+
+        }
+        return $this->resultFalse;
     }
 }

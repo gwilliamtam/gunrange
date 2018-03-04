@@ -41,4 +41,10 @@ class PracticeTarget extends Model
 
         return substr($dateTime, 0, strrpos($dateTime,":"));
     }
+
+    public function header()
+    {
+        return $this->hasOne('App\Models\PracticeHeader', 'id', 'header_id');
+
+    }
 }

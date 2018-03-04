@@ -17,7 +17,8 @@ class GearController extends Controller
         $gears = Gear::where('user_id', '=', $user->id)->orderBy('name')->get();
 
         return view('gear', [
-            'gears' => $gears
+            'gears' => $gears,
+            'pin' => empty($_COOKIE['gear']) ? null : $_COOKIE['gear'],
         ]);
     }
 

@@ -67,3 +67,11 @@ Route::prefix('practice')->group(function () {
         ->name('practice.index')->middleware('auth');
 });
 
+
+Route::prefix('target')->group(function () {
+    Route::get('remove/{elementType}/{practiceId}', 'PracticeController@removePracticeElement')
+        ->middleware('auth');
+    Route::get('update/{targetId}', 'PracticeController@updateTarget')
+        ->middleware('auth');
+});
+

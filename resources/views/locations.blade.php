@@ -40,8 +40,12 @@
                             @endif
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group" data-id="{{ $location->id }}" data-json="{{ json_encode($location) }}">
+                                    @if($pin == $location->id)
+                                    <button type="button" class="btn btn btn-success target-action">
+                                    @else
                                     <button type="button" class="btn btn btn-dark target-action">
-                                        <i class="fas fa-bullseye"></i>
+                                    @endif
+                                        <i class="fas fa-thumbtack"></i>
                                     </button>
                                     @php
                                     #<button type="button" class="btn btn btn-dark map-action">
@@ -147,7 +151,11 @@
 
             var loadFile = function(event) {
                 var preview = document.getElementById('photo-preview');
-                preview.src = URL.createObjectURL(event.target.files[0]);
+                if(event.target.files[0] != undefined) {
+                    preview.src = URL.createObjectURL(event.target.files[0]);
+                }else{
+                    preview.src = ''
+                }
             }
 
             $(".del-action").on("click", function(){
@@ -186,6 +194,10 @@ console.log(location)
 
             $(".target-action").on("click", function(){
                 var location = JSON.parse(this.parentElement.attributes['data-json'].value)
+                $(".target-action").removeClass("btn-success");
+                $(".target-action").addClass("btn-dark");
+                $(this).removeClass("btn-dark")
+                $(this).addClass("btn-success")
                 setCookie("location", location.id);
             })
         })
