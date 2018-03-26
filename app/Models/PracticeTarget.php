@@ -11,6 +11,11 @@ class PracticeTarget extends Model
     protected $table = "practice_targets";
     //
 
+    public static function getUnits()
+    {
+        return array(null, 'ft', 'yd', 'mt');
+    }
+
     public function addPhoto(Request $request)
     {
         $user = Auth::user();

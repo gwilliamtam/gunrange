@@ -8,7 +8,7 @@
                 <div class="card-header">Register</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('register') }}" id="register-form">
                         @csrf
 
                         <div class="form-group row">
@@ -75,7 +75,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" id="submit-button" class="btn btn-dark disabled">
+                                <button type="button" id="submit-button" class="btn btn-dark disabled">
                                     Register
                                 </button>
                             </div>
@@ -110,6 +110,7 @@
 
     $(document).ready(function(){
         $("#accept-terms").on("click", function(){
+            event.preventDefault()
             $("#terms-modal").modal("show")
         })
 
@@ -119,6 +120,12 @@
 
         $("#no-accept-terms-button").on("click", function(){
             reverseAcceptTerms()
+        })
+
+        $("#submit-button").on("click", function(){
+            if(!$("#submit-button").hasClass("disabled")){
+                $("#register-form").submit()
+            }
         })
     })
 </script>

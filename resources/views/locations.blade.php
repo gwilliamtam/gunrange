@@ -12,6 +12,9 @@
                 <div class="col-md-4">
                     <label id="add-location-button" class="btn btn-dark my-2" style="width: 100%">Add a Location</label>
                 </div>
+                <div class="col-md-8">
+                    <label class="my-3">Your <i class="fas fa-thumbtack fa-sm"></i> selection will be used by <i class="fas fa-magic fa-sm"></i> in Practice</label>
+                </div>
             </div>
         </div>
     </section>

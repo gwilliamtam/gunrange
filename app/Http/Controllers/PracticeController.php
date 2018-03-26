@@ -168,10 +168,16 @@ class PracticeController extends Controller
         if(!empty($request->value)){
             $practiceTarget->value = $request->value;
         }
-
         if(!empty($request->rounds)){
             $practiceTarget->rounds = $request->rounds;
         }
+        if(!empty($request->distance)){
+            $practiceTarget->distance = $request->distance;
+        }
+        if(!empty($request->units)){
+            $practiceTarget->units = $request->units;
+        }
+
 
         // Save now because we need the id for the image name
         $practiceTarget->save();
@@ -195,6 +201,8 @@ class PracticeController extends Controller
                 if ($target->header->user_id == $user->id) {
                     $target->rounds = $request->rounds;
                     $target->value = $request->value;
+                    $target->distance = $request->distance;
+                    $target->units = $request->units;
                     $target->save();
 
                     return $target;

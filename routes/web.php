@@ -75,3 +75,8 @@ Route::prefix('target')->group(function () {
         ->middleware('auth');
 });
 
+Route::prefix('dashboard')->group(function () {
+    Route::get('', 'DashboardController@index')
+        ->name('dashboard.index')->middleware('auth');
+});
+

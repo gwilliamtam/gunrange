@@ -29,17 +29,29 @@
                             <div class="card-practice-images">
                                 @if($practice->location)
                                     <div class="practice-element" id="loc{{ $practice->id }}" data-json="{{ json_encode($practice->location) }}" data-type="loc">
+                                        @if($practice->location->photo)
                                         <img src="/loc_images/{{ $practice->location->photo }}">
+                                        @else
+                                        <span>{!! $practice->location->name !!}</span>
+                                        @endif
                                     </div>
                                 @endif
                                 @if($practice->gear)
                                     <div class="practice-element" id="gear{{ $practice->id }}" data-json="{{ json_encode($practice->gear) }}" data-type="gear">
+                                        @if($practice->gear->photo)
                                         <img src="/gear_images/{{ $practice->gear->photo }}">
+                                        @else
+                                        <span>{!! $practice->gear->name !!}</span>
+                                        @endif
                                     </div>
                                 @endif
                                 @if($practice->ammo)
                                     <div class="practice-element" id="ammo{{ $practice->id }}" data-json="{{ json_encode($practice->ammo) }}" data-type="ammo">
+                                        @if($practice->ammo->photo)
                                         <img src="/ammo_images/{{ $practice->ammo->photo }}">
+                                        @else
+                                        <span>{!! $practice->ammo->name !!}</span>
+                                        @endif
                                     </div>
                                 @endif
 
@@ -82,7 +94,7 @@
                                             <i class="fas fa-times"></i>
                                         </button>
                                         @if($pin == $practice->id)
-                                            <button type="button" class="btn btn btn-success unpin-action" >
+                                            <button type="button" class="btn btn btn-danger unpin-action" >
                                                 <i class="fas fa-unlock"></i>
                                             </button>
                                         @else
@@ -150,24 +162,39 @@
                             </div>
                             <div class="modal-body">
 
-                                {{-- Target Value --}}
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="value" id="value" aria-describedby="valueHelp" placeholder="Enter target value">
-                                    <small id="valueHelp" class="form-text text-muted">You may enter the target value(optional)</small>
-                                </div>
-
-                                {{-- Rounds --}}
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="rounds" id="value" aria-describedby="roundsHelp" placeholder="Enter number or rounds">
-                                    <small id="valueHelp" class="form-text text-muted">You may enter the number of rounds used(optional)</small>
-                                </div>
-
                                 {{-- Photo Upload --}}
                                 <div class="form-group">
                                     <label for="photo" class="btn btn-outline-dark">Select Photo</label>
                                     <input type="file" accept="image/*" style="visibility:hidden;" name="photo" id="photo">
                                     <img id="photo-preview">
                                     <small id="photoHelp" class="form-text text-muted">Add a photo of your target(optional)</small>
+                                </div>
+
+                                {{-- Target Value --}}
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="value" id="value" aria-describedby="valueHelp" placeholder="Enter target value">
+                                    <small id="valueHelp" class="form-text text-muted">You may enter the target value (optional)</small>
+                                </div>
+
+                                {{-- Rounds --}}
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="rounds" id="value" aria-describedby="roundsHelp" placeholder="Enter number or rounds">
+                                    <small id="valueHelp" class="form-text text-muted">You may enter the number of rounds used (optional)</small>
+                                </div>
+
+                                {{-- Distance --}}
+                                <div class="row">
+                                    <div class="form-group col-8">
+                                        <input type="text" class="form-control" name="distance" id="value" aria-describedby="distanceHelp" placeholder="Enter the distance">
+                                        <small id="distanceHelp" class="form-text text-muted">You may enter your shooting distance (optional)</small>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <select  class="form-control" id="units" name="units">
+                                            @foreach(\App\Models\PracticeTarget::getUnits() as $unit)
+                                                <option value="{{ $unit }}">{{ $unit }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
 
                             </div>
@@ -200,8 +227,23 @@
                             </div>
                             {{-- Target Value --}}
                             <div class="form-group" id="edit-target-rounds">
-                                <input type="text" class="form-control" name="value" id="targetRounds" aria-describedby="roundsHelp" placeholder="Enter number of rounds">
+                                <input type="text" class="form-control" name="rounds" id="targetRounds" aria-describedby="roundsHelp" placeholder="Enter number of rounds">
                                 <small id="roundsHelp" class="form-text text-muted">You may enter the number of rounds used (optional)</small>
+                            </div>
+
+                            {{-- Distance --}}
+                            <div class="row" id="edit-target-distance">
+                                <div class="form-group col-8">
+                                    <input type="text" class="form-control" name="distance" id="targetDistance" aria-describedby="distanceHelp" placeholder="Enter the distance">
+                                    <small id="distanceHelp" class="form-text text-muted">You may enter your shooting distance (optional)</small>
+                                </div>
+                                <div class="form-group col-4">
+                                    <select  class="form-control" name="units" id="targetUnits">
+                                        @foreach(\App\Models\PracticeTarget::getUnits() as $unit)
+                                            <option value="{{ $unit }}">{{ $unit }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
                         </div>
@@ -290,6 +332,7 @@
                 }
                 $("#edit-target-value").hide()
                 $("#edit-target-rounds").hide()
+                $("#edit-target-distance").hide()
                 $("#button-view-save").hide()
 
                 $("#view-modal .modal-title").html(practiceElement.name)
@@ -311,9 +354,13 @@
                 $("#targetValue").val(targetElement.value)
                 $("#edit-target-value").show()
 
-
                 $("#targetRounds").val(targetElement.rounds)
                 $("#edit-target-rounds").show()
+
+                $("#targetDistance").val(targetElement.distance)
+                $("#targetUnits").val(targetElement.units)
+                $("#edit-target-distance").show()
+
 
 
                 $("#view-modal .modal-title").html('Target')
@@ -328,9 +375,13 @@
                 var url = "/target/update/" + id
                 var rounds = $("#targetRounds").val()
                 var value = $("#targetValue").val()
+                var distance = $("#targetDistance").val()
+                var units = $("#targetUnits").val()
                 var data = {
                     "rounds": rounds,
-                    "value": value
+                    "value": value,
+                    "distance": distance,
+                    "units": units
                 }
                 $.ajax({
                     url: url,
